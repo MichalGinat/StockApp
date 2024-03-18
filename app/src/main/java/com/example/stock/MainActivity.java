@@ -1,5 +1,6 @@
 package com.example.stock;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -100,10 +101,18 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, "Symbol: " + stockInfo.getSymbol() + ", Name: " + stockInfo.getName());
                     }
 
+                    showSearchResults(stockInfoList); // Start new activity to display search results
+
                 } else {
                     Log.e(TAG, "Error fetching stock data: " + response.code() + " - " + response.message());
                 }
             }
         });
+    }
+
+    private void showSearchResults(List<StockInfo> stockInfoList) {
+        Intent intent = new Intent(this, SearchResultsActivity.class);
+        intent.putParcelableArrayListExtra("stockInfoList", (ArrayList<StockInfo>) stockInfoList);
+        startActivity(intent);
     }
 }
