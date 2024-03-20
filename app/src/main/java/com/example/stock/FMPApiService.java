@@ -29,11 +29,10 @@ public class FMPApiService {
 //    }
 
     public void SearchStockDataByName(String name, Callback callback) {
-        HttpUrl url = HttpUrl.parse(BASE_URL + "/search-name")
+        HttpUrl url = HttpUrl.parse(BASE_URL + "/search")
                 .newBuilder()
                 .addQueryParameter("query", name)
                 .addQueryParameter("limit", "30")
-                .addQueryParameter("exchange", "")
                 .addQueryParameter("apikey", API_KEY)
                 .build();
 

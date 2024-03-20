@@ -9,7 +9,7 @@
         android:id="@+id/editTextCompanyName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Company Name"
+        android:hint="Enter Symbol or Company Name"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
