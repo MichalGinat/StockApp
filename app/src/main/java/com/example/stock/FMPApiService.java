@@ -15,18 +15,18 @@ public class FMPApiService {
         this.client = new OkHttpClient();
     }
 
-//    public void getStockData(String symbol, Callback callback) {
-//        HttpUrl url = HttpUrl.parse(BASE_URL + "/quote/" + symbol)
-//                .newBuilder()
-//                .addQueryParameter("apikey", API_KEY)
-//                .build();
-//
-//        Request request = new Request.Builder()
-//                .url(url)
-//                .build();
-//
-//        client.newCall(request).enqueue(callback);
-//    }
+    public void getStockData(String symbol, Callback callback) {
+        HttpUrl url = HttpUrl.parse(BASE_URL + "/quote/" + symbol)
+                .newBuilder()
+                .addQueryParameter("apikey", API_KEY)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(callback);
+    }
 
     public void SearchStockDataByName(String name, Callback callback) {
         HttpUrl url = HttpUrl.parse(BASE_URL + "/search")

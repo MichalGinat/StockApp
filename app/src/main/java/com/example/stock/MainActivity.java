@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                     for (JsonElement element : jsonArray) {
                         String symbol = element.getAsJsonObject().get("symbol").getAsString();
                         String name = element.getAsJsonObject().get("name").getAsString();
-                        stockInfoList.add(new StockInfo(symbol, name));
+                        stockInfoList.add(new StockInfo(symbol, name,0.0,0.0));
                     }
 
                     // Handle the list of StockInfo objects here, e.g., update UI or store in data structure

@@ -7,8 +7,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.stock.model.StockDetailsActivity;
 import com.example.stock.model.StockInfo;
 import java.util.List;
+import android.content.Intent;
 
 public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
 
@@ -32,7 +35,19 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
         StockInfo stockInfo = stockInfoList.get(position);
         holder.symbolTextView.setText(stockInfo.getSymbol());
         holder.nameTextView.setText(stockInfo.getName());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle item click
+                Intent intent = new Intent(context, StockDetailsActivity.class);
+                intent.putExtra("selectedStockInfo", stockInfo);
+                context.startActivity(intent);
+            }
+        });
     }
+
+
 
     @Override
     public int getItemCount() {

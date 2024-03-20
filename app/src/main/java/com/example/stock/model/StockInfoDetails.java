@@ -3,35 +3,35 @@ package com.example.stock.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class StockInfo implements Parcelable {
+public class StockInfoDetails implements Parcelable {
     private String symbol;
     private String name;
     private double price;
     private double change;
 
-    public StockInfo(String symbol, String name,double price, double change) {
+    public StockInfoDetails(String symbol, String name, double price, double change) {
         this.symbol = symbol;
         this.name = name;
         this.price = price;
         this.change = change;
     }
 
-    protected StockInfo(Parcel in) {
+    protected StockInfoDetails(Parcel in) {
         symbol = in.readString();
         name = in.readString();
         price = in.readDouble();
         change = in.readDouble();
     }
 
-    public static final Creator<StockInfo> CREATOR = new Creator<StockInfo>() {
+    public static final Creator<StockInfoDetails> CREATOR = new Creator<StockInfoDetails>() {
         @Override
-        public StockInfo createFromParcel(Parcel in) {
-            return new StockInfo(in);
+        public StockInfoDetails createFromParcel(Parcel in) {
+            return new StockInfoDetails(in);
         }
 
         @Override
-        public StockInfo[] newArray(int size) {
-            return new StockInfo[size];
+        public StockInfoDetails[] newArray(int size) {
+            return new StockInfoDetails[size];
         }
     };
 
@@ -42,6 +42,7 @@ public class StockInfo implements Parcelable {
     public String getName() {
         return name;
     }
+
     public double getPrice() {
         return price;
     }
