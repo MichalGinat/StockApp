@@ -46,7 +46,6 @@ public class StockDetailsActivity extends BaseActivity {
     }
 
     private void fetchStockQuote(String symbol) {
-        FMPApiServiceSingelton apiService = FMPApiServiceSingelton.getInstance();
         apiService.getStockData(symbol, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
