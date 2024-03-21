@@ -15,8 +15,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -42,8 +40,8 @@ public class StockDetailsActivity extends AppCompatActivity {
 
         StockInfo selectedStock = getIntent().getParcelableExtra("selectedStockInfo");
         if (selectedStock != null) {
-            symbolTextView.setText(selectedStock.getSymbol());
-            nameTextView.setText(selectedStock.getName());
+            symbolTextView.setText(" " + selectedStock.getSymbol());
+            nameTextView.setText(" " + selectedStock.getName());
 
             // Fetch price and change using the Quote API
             fetchStockQuote(selectedStock.getSymbol());
@@ -69,17 +67,11 @@ public class StockDetailsActivity extends AppCompatActivity {
                     if (jsonArray.size() > 0) {
                         JsonObject jsonObject = jsonArray.get(0).getAsJsonObject();
                         // Extract price and change from the JSON object
-                        double price = jsonObject.get("price").getAsDouble();
-                        double change = jsonObject.get("change").getAsDouble();
+                        final double price = jsonObject.get("price").getAsDouble();
+                        final double change = jsonObject.get("change").getAsDouble();
 
                         // Update UI with price and change information
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                priceTextView.setText(String.valueOf(price));
-                                changeTextView.setText(String.valueOf(change));
-                            }
-                        });
+                        updateUI(price, change);
                     } else {
                         Log.e(TAG, "Empty JSON array in response.");
                     }
@@ -88,6 +80,16 @@ public class StockDetailsActivity extends AppCompatActivity {
                 }
             }
 
+        });
+    }
+
+    private void updateUI(final double price, final double change) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                priceTextView.setText(String.format(" %.3f USD", price));
+                changeTextView.setText(String.format(" %.3f USD", change));
+            }
         });
     }
 }

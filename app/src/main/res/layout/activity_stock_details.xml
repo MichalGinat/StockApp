@@ -1,31 +1,35 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@drawable/rounded_frame">
 
     <TextView
         android:id="@+id/symbolTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Symbol: "
+        android:text="Symbol:"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
 
     <TextView
         android:id="@+id/symbolTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/symbolTitleTextView"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp"/>
 
     <TextView
         android:id="@+id/nameTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/symbolTextView"
-        android:text="Name: "
+        android:text="Name:"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
 
     <TextView
         android:id="@+id/nameTextView"
@@ -33,16 +37,18 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/symbolTextView"
         android:layout_toRightOf="@id/nameTitleTextView"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp"/>
 
     <TextView
         android:id="@+id/priceTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/nameTextView"
-        android:text="Price: "
+        android:text="Price:"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
 
     <TextView
         android:id="@+id/priceTextView"
@@ -50,16 +56,18 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/nameTextView"
         android:layout_toRightOf="@id/priceTitleTextView"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp"/>
 
     <TextView
         android:id="@+id/changeTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/priceTextView"
-        android:text="Change: "
+        android:text="Change:"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
 
     <TextView
         android:id="@+id/changeTextView"
@@ -67,6 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/priceTextView"
         android:layout_toRightOf="@id/changeTitleTextView"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp"/>
 
 </RelativeLayout>
