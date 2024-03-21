@@ -10,9 +10,10 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:hint="Enter company name Or Symbol"
+        android:hint="Enter Company name Or Symbol"
         android:inputType="text"
-        android:padding="8dp"
+        android:textSize="18sp"
+        android:padding="16dp"
         android:layout_marginEnd="8dp" />
 
     <!-- ImageView for Search icon -->
