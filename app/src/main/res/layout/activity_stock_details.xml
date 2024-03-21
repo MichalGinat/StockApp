@@ -1,8 +1,16 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:background="@drawable/rounded_frame">
+    android:orientation="vertical">
+
+    <!-- Include layout_common.xml at the top -->
+    <include layout="@layout/layout_common" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:background="@drawable/rounded_frame">
 
     <TextView
         android:id="@+id/symbolTitleTextView"
@@ -11,7 +19,7 @@
         android:text="Symbol:"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="16dp"/>
 
     <TextView
         android:id="@+id/symbolTextView"
@@ -77,5 +85,6 @@
         android:layout_toRightOf="@id/changeTitleTextView"
         android:textSize="18sp"
         android:layout_marginBottom="8dp"/>
+    </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>

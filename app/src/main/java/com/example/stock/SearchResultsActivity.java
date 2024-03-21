@@ -1,18 +1,18 @@
 package com.example.stock;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.stock.model.StockInfo;
-import java.util.ArrayList;
+import com.example.stock.model.StockInfoSerach;
+
 import java.util.List;
 
-public class SearchResultsActivity extends AppCompatActivity {
+public class SearchResultsActivity extends BaseActivity {
 
     private RecyclerView recyclerView;
     private StockAdapter stockAdapter;
-    private List<StockInfo> stockInfoList;
+    private List<StockInfoSerach> stockInfoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

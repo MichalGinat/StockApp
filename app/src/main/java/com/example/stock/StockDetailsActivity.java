@@ -1,16 +1,11 @@
-package com.example.stock.model;
+package com.example.stock;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.stock.FMPApiService;
-import com.example.stock.R;
-import com.example.stock.model.StockInfo;
+import com.example.stock.model.StockInfoSerach;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -20,7 +15,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class StockDetailsActivity extends AppCompatActivity {
+public class StockDetailsActivity extends BaseActivity {
 
     private static final String TAG = StockDetailsActivity.class.getSimpleName();
     private TextView symbolTextView;
@@ -38,7 +33,7 @@ public class StockDetailsActivity extends AppCompatActivity {
         priceTextView = findViewById(R.id.priceTextView);
         changeTextView = findViewById(R.id.changeTextView);
 
-        StockInfo selectedStock = getIntent().getParcelableExtra("selectedStockInfo");
+        StockInfoSerach selectedStock = getIntent().getParcelableExtra("selectedStockInfo");
         if (selectedStock != null) {
             symbolTextView.setText(" " + selectedStock.getSymbol());
             nameTextView.setText(" " + selectedStock.getName());
@@ -51,7 +46,7 @@ public class StockDetailsActivity extends AppCompatActivity {
     }
 
     private void fetchStockQuote(String symbol) {
-        FMPApiService apiService = new FMPApiService();
+        FMPApiServiceSingelton apiService = FMPApiServiceSingelton.getInstance();
         apiService.getStockData(symbol, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {

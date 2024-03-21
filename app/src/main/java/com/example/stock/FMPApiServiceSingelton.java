@@ -5,14 +5,29 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
-public class FMPApiService {
+public class FMPApiServiceSingelton {
     private static final String BASE_URL = "https://financialmodelingprep.com/api/v3";
     private static final String API_KEY = "yjNSBqquKsLTabngBsZpsHsKjYdhSnPJ"; // Replace with your actual API key
 
+    private static FMPApiServiceSingelton instance;
+
     private final OkHttpClient client;
 
-    public FMPApiService() {
+    // Private constructor to prevent instantiation outside this class
+    private FMPApiServiceSingelton() {
         this.client = new OkHttpClient();
+    }
+
+    // Static method to get the singleton instance
+    public static FMPApiServiceSingelton getInstance() {
+        if (instance == null) {
+            synchronized (FMPApiServiceSingelton.class) {
+                if (instance == null) {
+                    instance = new FMPApiServiceSingelton();
+                }
+            }
+        }
+        return instance;
     }
 
     public void getStockData(String symbol, Callback callback) {

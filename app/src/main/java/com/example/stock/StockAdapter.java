@@ -8,17 +8,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.stock.model.StockDetailsActivity;
-import com.example.stock.model.StockInfo;
+import com.example.stock.model.StockInfoSerach;
 import java.util.List;
 import android.content.Intent;
 
 public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
 
     private Context context;
-    private List<StockInfo> stockInfoList;
+    private List<StockInfoSerach> stockInfoList;
 
-    public StockAdapter(Context context, List<StockInfo> stockInfoList) {
+    public StockAdapter(Context context, List<StockInfoSerach> stockInfoList) {
         this.context = context;
         this.stockInfoList = stockInfoList;
     }
@@ -32,7 +31,7 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
 
     @Override
     public void onBindViewHolder(@NonNull StockViewHolder holder, int position) {
-        StockInfo stockInfo = stockInfoList.get(position);
+        StockInfoSerach stockInfo = stockInfoList.get(position);
         holder.symbolTextView.setText(stockInfo.getSymbol());
         holder.nameTextView.setText(stockInfo.getName());
 
