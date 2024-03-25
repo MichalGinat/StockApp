@@ -65,7 +65,7 @@ public class BaseActivity extends AppCompatActivity {
                 String stockName = editText.getText().toString().trim();
 
                 if (!TextUtils.isEmpty(stockName)) {
-                    searchByName(stockName);
+                    searchByNameOrSymbol(stockName);
                 } else {
                     // Handle case where company name is empty
                     Toast.makeText(BaseActivity.this, "Please enter a company name", Toast.LENGTH_SHORT).show();
@@ -74,7 +74,7 @@ public class BaseActivity extends AppCompatActivity {
         });
     }
 
-    public void searchByName(String name) {
+    public void searchByNameOrSymbol(String name) {
         apiService.SearchStockDataByName(name, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
