@@ -58,4 +58,34 @@ public class FMPApiServiceSingelton {
         client.newCall(request).enqueue(callback);
     }
 
+    public void StockHistoricalData(String symbol, String fromDate, String toDate, Callback callback) {
+        HttpUrl url = HttpUrl.parse(BASE_URL + "/historical-price-full/" + symbol)
+                .newBuilder()
+                .addQueryParameter("from", fromDate)
+                .addQueryParameter("to", toDate)
+                .addQueryParameter("apikey", API_KEY)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(callback);
+    }
+
+    public void StockHistoricalDay(String symbol, String date, Callback callback) {
+        HttpUrl url = HttpUrl.parse(BASE_URL + "/historical-chart/5min/" + symbol)
+                .newBuilder()
+                .addQueryParameter("from", date)
+                .addQueryParameter("to", date)
+                .addQueryParameter("apikey", API_KEY)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(callback);
+    }
+
 }
