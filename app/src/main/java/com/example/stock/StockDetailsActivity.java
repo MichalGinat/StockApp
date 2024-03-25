@@ -6,9 +6,11 @@ import android.widget.TextView;
 
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.stock.model.StockInfoSerach;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -28,22 +30,23 @@ public class StockDetailsActivity extends BaseActivity {
     private TextView priceTextView;
     private TextView changeTextView;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock_details);
 
         // Find views
         TabLayout tabLayout = findViewById(R.id.tab_layout);
-        ViewPager viewPager = findViewById(R.id.view_pager);
+        ViewPager2 viewPager = findViewById(R.id.view_pager);
         symbolTextView = findViewById(R.id.symbolTextView);
         nameTextView = findViewById(R.id.nameTextView);
         priceTextView = findViewById(R.id.priceTextView);
         changeTextView = findViewById(R.id.changeTextView);
 
-        // Set up ViewPager with adapter
-        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT));
-        tabLayout.setupWithViewPager(viewPager);
+        // Set up ViewPager2 with adapter
+        viewPager.setAdapter(new PagerAdapter(this));
+        new TabLayoutMediator(tabLayout, viewPager,
+                (tab, position) -> tab.setText("Tab " + (position + 1))
+        ).attach();
 
         StockInfoSerach selectedStock = getIntent().getParcelableExtra("selectedStockInfo");
         if (selectedStock != null) {
@@ -52,14 +55,17 @@ public class StockDetailsActivity extends BaseActivity {
 
             // Fetch price and change using the Quote API
             fetchStockQuote(selectedStock.getSymbol());
-//            DayFragment dayFragment = (DayFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + viewPager.getCurrentItem());
-//            if (dayFragment != null) {
-//                dayFragment.setStockSymbol(selectedStock.getSymbol());
-//            }
+            viewPager.post(() -> {
+                DayFragment dayFragment = (DayFragment) getSupportFragmentManager().findFragmentByTag("f" + viewPager.getCurrentItem());
+                if (dayFragment != null) {
+                    dayFragment.setStockSymbol(selectedStock.getSymbol());
+                }
+            });
         } else {
             Log.e(TAG, "Selected stock is null.");
         }
     }
+
 
     private void fetchStockQuote(String symbol) {
         apiService.getStockData(symbol, new Callback() {

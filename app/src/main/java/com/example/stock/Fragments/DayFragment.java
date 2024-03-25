@@ -1,5 +1,6 @@
 package com.example.stock.Fragments;
 
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,11 +37,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -52,146 +57,190 @@ import okhttp3.Response;
 
 public class DayFragment extends Fragment {
 
-//    private static final String TAG = DayFragment.class.getSimpleName();
-//
-//    private LineChart lineChart;
-//
-//    private FMPApiServiceSingelton apiService;
-//
-//    @Nullable
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        View rootView = inflater.inflate(R.layout.fragment_day, container, false);
-//
-//        // Initialize API service instance
-//        apiService = FMPApiServiceSingelton.getInstance();
-//
-//        // Initialize LineChart
-//        lineChart = rootView.findViewById(R.id.line_chart);
-//
-//        return rootView;
-//    }
-//
-//    private void fetchStockDataDay(String symbol, String date) {
-//        apiService.StockHistoricalDay(symbol, date, new Callback() {
-//            @Override
-//            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-//                Log.e(TAG, "Error fetching stock quote: " + e.getMessage());
-//                getActivity().runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Toast.makeText(getContext(), "Failed to fetch data", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-//                if (response.isSuccessful()) {
-//                    String responseData = response.body().string();
-//                    Log.e(TAG, responseData);
-//
-//                    List<DailyStockData> dailyStockData;
-//                    dailyStockData = parseResponseToDailyStockDataList(responseData);
-//
-//                    if (!dailyStockData.isEmpty()) {
-//                        // Update UI with fetched data
-//                        getActivity().runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                displayStockDataInGraph(dailyStockData);
-//                            }
-//                        });
-//                    } else {
-//                        Log.e(TAG, "No data found in response.");
-//                    }
-//                } else {
-//                    Log.e(TAG, "Error fetching stock quote: " + response.code() + " - " + response.message());
-//                    getActivity().runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            Toast.makeText(getContext(), "Failed to fetch data", Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                }
-//            }
-//        });
-//
-//    }
-//
-//    private List<DailyStockData> parseResponseToDailyStockDataList(String responseData) {
-//        List<DailyStockData> stockDataList = new ArrayList<>();
-//        try {
-//            JSONArray jsonArray = new JSONArray(responseData);
-//            for (int i = 0; i < jsonArray.length(); i++) {
-//                JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                float price = (float) jsonObject.getDouble("close");
-//                String dateString = jsonObject.getString("date");
-//                float time = parseDateStringToTime(dateString);
-//                stockDataList.add(new DailyStockData(price, time));
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        return stockDataList;
-//    }
-//
-//    private float parseDateStringToTime(String dateString) {
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//        LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
-//        // Extract time in hours from LocalDateTime
-//        int hour = dateTime.getHour();
-//        int minute = dateTime.getMinute();
-//        float time = hour + (minute / 60.0f); // Convert minutes to fraction of hours
-//        return time;
-//    }
-//
-//
-//    private void displayStockDataInGraph(List<DailyStockData> dailyStockDataList) {
-//        List<Entry> entries = new ArrayList<>();
-//        for (DailyStockData data : dailyStockDataList) {
-//            // Assuming the time field in DailyStockData represents the x-axis value
-//            // and the price field represents the y-axis value
-//            entries.add(new Entry(data.getTime(), data.getPrice()));
-//        }
-//
-//        LineDataSet dataSet = new LineDataSet(entries, "Stock Data");
-//        dataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-//        dataSet.setValueTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-//
-//        LineData lineData = new LineData(dataSet);
-//        lineChart.setData(lineData);
-//
-//        // Customize chart appearance
-//        XAxis xAxis = lineChart.getXAxis();
-//        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-//        xAxis.setGranularity(1f);
-//        xAxis.setValueFormatter(new ValueFormatter() {
-//            @Override
-//            public String getAxisLabel(float value, AxisBase axis) {
-//                // Format x-axis labels as needed
-//                return String.valueOf(value);
-//            }
-//        });
-//
-//        YAxis yAxisRight = lineChart.getAxisRight();
-//        yAxisRight.setEnabled(false);
-//
-//        // Refresh chart
-//        lineChart.invalidate();
-//    }
-//
-//
-//    public void setStockSymbol(String symbol) {
-//        LocalDate currentDate = LocalDate.now();
-//        String formattedDate = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-//        fetchStockDataDay(symbol, formattedDate);
-//    }
+    private static final String TAG = DayFragment.class.getSimpleName();
 
+    private LineChart lineChart;
+
+    private FMPApiServiceSingelton apiService;
+
+    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_day, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_day, container, false);
+
+        // Initialize API service instance
+        apiService = FMPApiServiceSingelton.getInstance();
+
+        // Initialize LineChart
+        lineChart = rootView.findViewById(R.id.line_chart);
+//
+        return rootView;
     }
+
+    private void fetchStockDataDay(String symbol, String date) {
+        apiService.StockHistoricalDay(symbol, date, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Log.e(TAG, "Error fetching stock quote: " + e.getMessage());
+                getActivity().runOnUiThread(() -> {
+                    Toast.makeText(getContext(), "Failed to fetch data", Toast.LENGTH_SHORT).show();
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String responseData = response.body().string();
+                    Log.e(TAG, responseData);
+
+                    List<DailyStockData> dailyStockData = parseResponseToDailyStockDataList(responseData);
+
+                    if (!dailyStockData.isEmpty()) {
+                        getActivity().runOnUiThread(() -> {
+                            displayStockDataInGraph(dailyStockData);
+                        });
+                    } else {
+                        Log.e(TAG, "No valid data found in response.");
+                        getActivity().runOnUiThread(() -> {
+                            Toast.makeText(getContext(), "No valid data found", Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                } else {
+                    Log.e(TAG, "Error fetching stock quote: " + response.code() + " - " + response.message());
+                    getActivity().runOnUiThread(() -> {
+                        Toast.makeText(getContext(), "Failed to fetch data", Toast.LENGTH_SHORT).show();
+                    });
+                }
+            }
+        });
+    }
+
+    private List<DailyStockData> parseResponseToDailyStockDataList(String responseData) {
+        List<DailyStockData> stockDataList = new ArrayList<>();
+        try {
+            JSONArray jsonArray = new JSONArray(responseData);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String dateString = jsonObject.getString("date");
+                float closePrice = (float) jsonObject.getDouble("close");
+
+                // Extract hour from the date string
+                String[] dateTimeParts = dateString.split(" ");
+                String timePart = dateTimeParts[1]; // Format: HH:mm:ss
+
+                stockDataList.add(new DailyStockData(closePrice, timePart));
+            }
+        } catch (JSONException e) {
+            Log.e(TAG, "Error parsing JSON data: " + e.getMessage());
+        }
+        return stockDataList;
+    }
+
+
+
+    private void displayStockDataInGraph(List<DailyStockData> dailyStockDataList) {
+        if (dailyStockDataList == null || dailyStockDataList.isEmpty()) {
+            Log.e(TAG, "Empty or null data list provided.");
+            // Handle the empty data case, for example:
+            Toast.makeText(getContext(), "No data to display", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        List<Entry> entries = new ArrayList<>();
+        List<String> xValues = new ArrayList<>(); // To store x-axis labels
+
+        // Sort the daily stock data list based on time
+        Collections.sort(dailyStockDataList, new Comparator<DailyStockData>() {
+            @Override
+            public int compare(DailyStockData data1, DailyStockData data2) {
+                return data1.getDate().compareTo(data2.getDate());
+            }
+        });
+
+        for (int i = 0; i < dailyStockDataList.size(); i++) {
+            DailyStockData data = dailyStockDataList.get(i);
+            entries.add(new Entry(i, data.getPrice()));
+            xValues.add(data.getDate()); // Assuming date format is "HH:mm:ss"
+        }
+
+        LineDataSet dataSet = new LineDataSet(entries, "Stock Data");
+        dataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+        dataSet.setDrawCircles(false); // Hide data points (dots)
+        dataSet.setDrawValues(false); // Hide values (text)
+        dataSet.setMode(LineDataSet.Mode.LINEAR); // Set mode to display a smooth line
+
+        LineData lineData = new LineData(dataSet);
+        lineChart.setData(lineData);
+
+        // Customize chart appearance
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setGranularity(1f);
+
+        // Set custom value formatter for x-axis
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+                int index = (int) value;
+                if (index >= 0 && index < xValues.size()) {
+                    // Use rounded hour labels
+                    String time = xValues.get(index);
+                    String[] timeParts = time.split(":");
+                    if (timeParts.length > 1) {
+                        String hour = timeParts[0];
+                        String minute = timeParts[1];
+                        return hour + ":" + minute; // Format as "HH:mm"
+                    }
+                }
+                return "";
+            }
+        });
+
+        // Customize the left y-axis
+        YAxis yAxisLeft = lineChart.getAxisLeft();
+        YAxis yAxisRight = lineChart.getAxisRight();
+        yAxisRight.setEnabled(false); // Disable the right y-axis
+
+        yAxisLeft.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                // Format y-axis values as needed
+                return String.format(Locale.US, "%.2f", value); // Example: Format to two decimal places
+            }
+        });
+
+        // Set minimum and maximum values for the y-axis to avoid compression
+        float minYValue = Collections.min(entries, Comparator.comparing(Entry::getY)).getY();
+        float maxYValue = Collections.max(entries, Comparator.comparing(Entry::getY)).getY();
+        yAxisLeft.setAxisMinimum(minYValue - 1); // Adjust the offset as needed
+        yAxisLeft.setAxisMaximum(maxYValue + 1); // Adjust the offset as needed
+
+        // Refresh chart
+        lineChart.invalidate();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public void setStockSymbol(String symbol) {
+        LocalDate currentDate = LocalDate.now();
+        String formattedDate = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        fetchStockDataDay(symbol, formattedDate);
+    }
+
+//    @Override
+//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+//                             @Nullable Bundle savedInstanceState) {
+//        // Inflate the layout for this fragment
+//        return inflater.inflate(R.layout.fragment_day, container, false);
+//    }
 }

@@ -4,17 +4,17 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class DailyStockData implements Parcelable {
-    private float time;
+    private String date;
     private float price;
 
-    public DailyStockData(float price, float time) {
+    public DailyStockData(float price, String time) {
         this.price = price;
-        this.time = time;
+        this.date = time;
     }
 
     protected DailyStockData(Parcel in) {
         price = in.readFloat();
-        time = in.readFloat();
+        date = in.readString();
     }
 
     public static final Creator<DailyStockData> CREATOR = new Creator<DailyStockData>() {
@@ -29,12 +29,12 @@ public class DailyStockData implements Parcelable {
         }
     };
 
-    public float getTime() {
-        return time;
+    public String getDate() {
+        return date;
     }
 
-    public void setTime(float time) {
-        this.time = time;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public float getPrice() {
@@ -53,6 +53,6 @@ public class DailyStockData implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeFloat(price);
-        dest.writeFloat(time);
+        dest.writeString(date);
     }
 }

@@ -4,12 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- Add any additional views if needed -->
+    <!-- Add any additional views or layout elements above or below the LineChart as needed -->
 
     <!-- LineChart to display stock data -->
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/line_chart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="200dp"
+        android:padding="16dp"
+        android:background="@android:color/white" />
+
 
 </LinearLayout>
