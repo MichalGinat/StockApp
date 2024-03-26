@@ -10,6 +10,7 @@ import com.example.stock.Fragments.MonthFragment;
 import com.example.stock.Fragments.YearFragment;
 
 public class PagerAdapter extends FragmentStateAdapter {
+    private static final String[] TAB_TITLES = new String[]{"Day", "Month", "Year"};
 
     public PagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
@@ -35,5 +36,9 @@ public class PagerAdapter extends FragmentStateAdapter {
     public int getItemCount() {
         // Total number of tabs
         return 3;
+    }
+
+    public String getTabTitle(int position) {
+        return TAB_TITLES[position];
     }
 }

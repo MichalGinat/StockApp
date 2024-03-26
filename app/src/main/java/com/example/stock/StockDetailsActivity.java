@@ -1,9 +1,11 @@
 package com.example.stock;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
@@ -29,7 +31,9 @@ public class StockDetailsActivity extends BaseActivity {
     private TextView nameTextView;
     private TextView priceTextView;
     private TextView changeTextView;
-
+    private TextView changesPercentageTextView;
+    private TextView dayLowTextView;
+    private TextView dayHighTextView;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock_details);
@@ -38,14 +42,20 @@ public class StockDetailsActivity extends BaseActivity {
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         ViewPager2 viewPager = findViewById(R.id.view_pager);
         symbolTextView = findViewById(R.id.symbolTextView);
-        nameTextView = findViewById(R.id.nameTextView);
+        nameTextView = findViewById(R.id.companyNameTextView);
         priceTextView = findViewById(R.id.priceTextView);
         changeTextView = findViewById(R.id.changeTextView);
+        changesPercentageTextView = findViewById(R.id.changesPercentageTextView);
+        dayLowTextView = findViewById(R.id.dayLowTextView);
+        dayHighTextView = findViewById(R.id.dayHighTextView);
+
+
+        PagerAdapter pagerAdapter = new PagerAdapter(this);
 
         // Set up ViewPager2 with adapter
-        viewPager.setAdapter(new PagerAdapter(this));
+        viewPager.setAdapter(pagerAdapter);
         new TabLayoutMediator(tabLayout, viewPager,
-                (tab, position) -> tab.setText("Tab " + (position + 1))
+                (tab, position) -> tab.setText(pagerAdapter.getTabTitle(position))
         ).attach();
 
         StockInfoSerach selectedStock = getIntent().getParcelableExtra("selectedStockInfo");
@@ -66,7 +76,6 @@ public class StockDetailsActivity extends BaseActivity {
         }
     }
 
-
     private void fetchStockQuote(String symbol) {
         apiService.getStockData(symbol, new Callback() {
             @Override
@@ -85,9 +94,12 @@ public class StockDetailsActivity extends BaseActivity {
                         // Extract price and change from the JSON object
                         final double price = jsonObject.get("price").getAsDouble();
                         final double change = jsonObject.get("change").getAsDouble();
+                        final double changesPercentage = jsonObject.get("changesPercentage").getAsDouble();
+                        final double dayLow = jsonObject.get("dayLow").getAsDouble();
+                        final double dayHigh = jsonObject.get("dayHigh").getAsDouble();
 
-                        // Update UI with price and change information
-                        updateUI(price, change);
+                        // Update UI with all information
+                        updateUI(price, change, changesPercentage, dayLow, dayHigh);
                     } else {
                         Log.e(TAG, "Empty JSON array in response.");
                     }
@@ -99,13 +111,32 @@ public class StockDetailsActivity extends BaseActivity {
         });
     }
 
-    private void updateUI(final double price, final double change) {
+    private void updateUI(final double price, final double change, final double changesPercentage, final double dayLow, final double dayHigh) {
+        Context context = this;
+
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 priceTextView.setText(String.format(" %.3f USD", price));
-                changeTextView.setText(String.format(" %.3f USD", change));
+
+                // Set text color for change based on its value
+                if (change < 0) {
+                    changeTextView.setTextColor(ContextCompat.getColor(context, R.color.red)); // Set text color to red for negative change
+                    changeTextView.setText(String.format(" %.3f USD \u2193", change)); // Append down arrow
+                    changesPercentageTextView.setTextColor(ContextCompat.getColor(context, R.color.red)); // Set text color to red for negative percentage change
+                    changesPercentageTextView.setText(String.format(" %.2f%% \u2193", changesPercentage)); // Append down arrow
+                } else {
+                    changeTextView.setTextColor(ContextCompat.getColor(context, R.color.green)); // Set text color to green for positive change
+                    changeTextView.setText(String.format(" %.3f USD \u2191", change)); // Append up arrow
+                    changesPercentageTextView.setTextColor(ContextCompat.getColor(context, R.color.green)); // Set text color to green for positive percentage change
+                    changesPercentageTextView.setText(String.format(" %.2f%% \u2191", changesPercentage)); // Append up arrow
+
+                }
+
+                dayLowTextView.setText(String.format(" %.3f USD", dayLow));
+                dayHighTextView.setText(String.format(" %.3f USD", dayHigh));
             }
         });
     }
+
 }

@@ -8,12 +8,18 @@ public class StockInfoDetails implements Parcelable {
     private String name;
     private double price;
     private double change;
+    private double changesPercentage;
+    private double dayLow;
+    private double dayHigh;
 
-    public StockInfoDetails(String symbol, String name, double price, double change) {
+    public StockInfoDetails(String symbol, String name, double price, double change, double changesPercentage, double dayLow, double dayHigh) {
         this.symbol = symbol;
         this.name = name;
         this.price = price;
         this.change = change;
+        this.changesPercentage = changesPercentage;
+        this.dayLow = dayLow;
+        this.dayHigh = dayHigh;
     }
 
     protected StockInfoDetails(Parcel in) {
@@ -21,6 +27,9 @@ public class StockInfoDetails implements Parcelable {
         name = in.readString();
         price = in.readDouble();
         change = in.readDouble();
+        changesPercentage = in.readDouble();
+        dayLow = in.readDouble();
+        dayHigh = in.readDouble();
     }
 
     public static final Creator<StockInfoDetails> CREATOR = new Creator<StockInfoDetails>() {
@@ -59,6 +68,30 @@ public class StockInfoDetails implements Parcelable {
         this.change = change;
     }
 
+    public double getChangesPercentage() {
+        return changesPercentage;
+    }
+
+    public void setChangesPercentage(double changesPercentage) {
+        this.changesPercentage = changesPercentage;
+    }
+
+    public double getDayLow() {
+        return dayLow;
+    }
+
+    public void setDayLow(double dayLow) {
+        this.dayLow = dayLow;
+    }
+
+    public double getDayHigh() {
+        return dayHigh;
+    }
+
+    public void setDayHigh(double dayHigh) {
+        this.dayHigh = dayHigh;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -70,5 +103,9 @@ public class StockInfoDetails implements Parcelable {
         dest.writeString(name);
         dest.writeDouble(price);
         dest.writeDouble(change);
+        dest.writeDouble(changesPercentage);
+        dest.writeDouble(dayLow);
+        dest.writeDouble(dayHigh);
     }
 }
+

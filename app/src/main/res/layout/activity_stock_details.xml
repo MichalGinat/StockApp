@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -11,98 +12,159 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:background="@drawable/rounded_frame">
+        android:layout_gravity="center">
 
-    <TextView
-        android:id="@+id/symbolTitleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Symbol:"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp"/>
+        <TextView
+            android:id="@+id/companyNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"/>
 
-    <TextView
-        android:id="@+id/symbolTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/symbolTitleTextView"
-        android:textSize="18sp"
-        android:layout_marginBottom="8dp"/>
+        <TextView
+            android:id="@+id/symbolTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/companyNameTextView"
+            android:textSize="16sp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="4dp"/>
 
-    <TextView
-        android:id="@+id/nameTitleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/symbolTextView"
-        android:text="Name:"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
-
-    <TextView
-        android:id="@+id/nameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/symbolTextView"
-        android:layout_toRightOf="@id/nameTitleTextView"
-        android:textSize="18sp"
-        android:layout_marginBottom="8dp"/>
-
-    <TextView
-        android:id="@+id/priceTitleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/nameTextView"
-        android:text="Price:"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
-
-    <TextView
-        android:id="@+id/priceTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/nameTextView"
-        android:layout_toRightOf="@id/priceTitleTextView"
-        android:textSize="18sp"
-        android:layout_marginBottom="8dp"/>
-
-    <TextView
-        android:id="@+id/changeTitleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/priceTextView"
-        android:text="Change:"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
-
-    <TextView
-        android:id="@+id/changeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/priceTextView"
-        android:layout_toRightOf="@id/changeTitleTextView"
-        android:textSize="18sp"
-        android:layout_marginBottom="8dp"/>
     </RelativeLayout>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        app:tabTextColor="#FFFFFF"
-        app:tabSelectedTextColor="#FFFFFF"
-        app:tabIndicatorColor="#FF0000"
-        app:tabMode="scrollable"
-        app:tabGravity="fill"/>
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/view_pager"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tab_layout"/>
+        android:orientation="vertical">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            app:tabTextColor="#FFFFFF"
+            app:tabSelectedTextColor="#FFFFFF"
+            app:tabIndicatorColor="#FFFFFF"
+            app:tabMode="fixed"
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="8dp"
+            />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@android:color/white"
+            android:padding="16dp"
+            android:clipToPadding="false"
+            />
+    </LinearLayout>
+
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+
+        <TextView
+            android:id="@+id/priceTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nameTextView"
+            android:text="Price:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/priceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nameTextView"
+            android:layout_toRightOf="@id/priceTitleTextView"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"
+            tools:ignore="NotSibling" />
+
+        <TextView
+            android:id="@+id/changeTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/priceTextView"
+            android:text="Change:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/changeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/priceTextView"
+            android:layout_toRightOf="@id/changeTitleTextView"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/changesPercentageTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/changeTextView"
+            android:text="Changes Percentage:"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/changesPercentageTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/changeTextView"
+            android:layout_toRightOf="@id/changesPercentageTitleTextView"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/dayLowTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/changesPercentageTextView"
+            android:text="Day Low:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/dayLowTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/changesPercentageTextView"
+            android:layout_toRightOf="@id/dayLowTitleTextView"
+            android:textSize="18sp"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/dayHighTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dayLowTextView"
+            android:text="Day High:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/dayHighTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dayLowTextView"
+            android:layout_toRightOf="@id/dayHighTitleTextView"
+            android:textSize="18sp"
+            android:layout_marginTop="8dp"/>
+    </RelativeLayout>
 
 </LinearLayout>
