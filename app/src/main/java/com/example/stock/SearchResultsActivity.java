@@ -8,6 +8,11 @@ import com.example.stock.model.StockInfoSerach;
 
 import java.util.List;
 
+/**
+ * SearchResultsActivity is responsible for displaying the search results
+ * obtained from the user's query. It extends BaseActivity to inherit common
+ * functionalities like navigation and UI setup.
+ */
 public class SearchResultsActivity extends BaseActivity {
 
     private RecyclerView recyclerView;
@@ -23,6 +28,9 @@ public class SearchResultsActivity extends BaseActivity {
         setupRecyclerView();
     }
 
+    /**
+     * Initializes the RecyclerView to display the search results.
+     */
     private void setupRecyclerView() {
         stockAdapter = new StockAdapter(this, stockInfoList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

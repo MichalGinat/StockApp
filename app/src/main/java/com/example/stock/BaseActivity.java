@@ -25,7 +25,11 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-
+/**
+ * BaseActivity serves as the base class for activities in the Stock app.
+ * It contains common functionality shared across multiple activities,
+ * such as setting up common UI elements and handling stock data searches.
+ */
 public class BaseActivity extends AppCompatActivity {
     protected FMPApiServiceSingelton apiService;
     private static final String TAG = BaseActivity.class.getSimpleName();
@@ -74,6 +78,12 @@ public class BaseActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Initiates a stock data search by name or symbol.
+     * Fetches data from the API and handles the response.
+     *
+     * @param name The name or symbol of the stock to search for.
+     */
     public void searchByNameOrSymbol(String name) {
         apiService.SearchStockDataByName(name, new Callback() {
             @Override
@@ -94,7 +104,7 @@ public class BaseActivity extends AppCompatActivity {
                         stockInfoList.add(new StockInfoSerach(symbol, name));
                     }
 
-                    // Handle the list of StockInfo objects here, e.g., update UI or store in data structure
+                    // Handle the list of StockInfo objects here - for debugging
                     for (StockInfoSerach stockInfo : stockInfoList) {
                         Log.d(TAG, "Symbol: " + stockInfo.getSymbol() + ", Name: " + stockInfo.getName());
                     }
@@ -108,6 +118,11 @@ public class BaseActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Starts the SearchResultsActivity to display search results.
+     *
+     * @param stockInfoList List of StockInfoSerach objects representing search results.
+     */
     private void showSearchResults(List<StockInfoSerach> stockInfoList) {
         Intent intent = new Intent(this, SearchResultsActivity.class);
         intent.putParcelableArrayListExtra("stockInfoList", (ArrayList<StockInfoSerach>) stockInfoList);

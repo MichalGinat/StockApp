@@ -4,28 +4,25 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
-
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
-
-import com.example.stock.Fragments.MonthFragment;
-import com.example.stock.Fragments.YearFragment;
 import com.example.stock.model.StockInfoSerach;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
 import java.io.IOException;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
-import com.example.stock.Fragments.DayFragment;
+
+/**
+ * StockDetailsActivity displays detailed information about a specific stock,
+ * including its symbol, name, price, change, percentage change, day low, and day high.
+ * It utilizes ViewPager2 and TabLayout to present different fragments(graph) for daily,
+ * monthly, and yearly stock data.
+ */
 
 public class StockDetailsActivity extends BaseActivity {
 
@@ -54,12 +51,7 @@ public class StockDetailsActivity extends BaseActivity {
         dayLowTextView = findViewById(R.id.dayLowTextView);
         dayHighTextView = findViewById(R.id.dayHighTextView);
 
-
-
-
-        // Set up ViewPager2 with adapter
-
-
+        // Retrieve selected stock information from intent
         StockInfoSerach selectedStock = getIntent().getParcelableExtra("selectedStockInfo");
         if (selectedStock != null) {
             symbolTextView.setText(" " + selectedStock.getSymbol());
@@ -67,6 +59,7 @@ public class StockDetailsActivity extends BaseActivity {
             PagerAdapter pagerAdapter = new PagerAdapter(this,selectedStock.getSymbol());
             viewPager.setAdapter(pagerAdapter);
 
+            // Setup ViewPager2 and TabLayout
             new TabLayoutMediator(tabLayout, viewPager,
                     (tab, position) -> tab.setText(pagerAdapter.getTabTitle(position))
             ).attach();
@@ -80,6 +73,10 @@ public class StockDetailsActivity extends BaseActivity {
 
     }
 
+    /**
+     * Fetches the stock quote using the provided stock symbol.
+     * @param symbol The symbol of the stock to fetch the quote for.
+     */
     private void fetchStockQuote(String symbol) {
         apiService.getStockData(symbol, new Callback() {
             @Override
@@ -95,14 +92,13 @@ public class StockDetailsActivity extends BaseActivity {
 
                     if (jsonArray.size() > 0) {
                         JsonObject jsonObject = jsonArray.get(0).getAsJsonObject();
-                        // Extract price and change from the JSON object
                         final double price = jsonObject.get("price").getAsDouble();
                         final double change = jsonObject.get("change").getAsDouble();
                         final double changesPercentage = jsonObject.get("changesPercentage").getAsDouble();
                         final double dayLow = jsonObject.get("dayLow").getAsDouble();
                         final double dayHigh = jsonObject.get("dayHigh").getAsDouble();
 
-                        // Update UI with all information
+                        // Update UI with stock quote details
                         updateUI(price, change, changesPercentage, dayLow, dayHigh);
                     } else {
                         Log.e(TAG, "Empty JSON array in response.");
@@ -115,6 +111,14 @@ public class StockDetailsActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Updates the UI with the fetched stock quote details.
+     * @param price The current price of the stock.
+     * @param change The change in the stock price.
+     * @param changesPercentage The percentage change in the stock price.
+     * @param dayLow The lowest price of the stock for the day.
+     * @param dayHigh The highest price of the stock for the day.
+     */
     private void updateUI(final double price, final double change, final double changesPercentage, final double dayLow, final double dayHigh) {
         Context context = this;
 
