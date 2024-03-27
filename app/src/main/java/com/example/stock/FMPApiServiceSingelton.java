@@ -13,7 +13,7 @@ import okhttp3.Request;
 
 public class FMPApiServiceSingelton {
     private static final String BASE_URL = "https://financialmodelingprep.com/api/v3";
-    private static final String API_KEY = "yjNSBqquKsLTabngBsZpsHsKjYdhSnPJ";
+    private static final String API_KEY = "0hUHsuduTQG0sHwT12l1gCLOsZnQqj3N";
 
     private static FMPApiServiceSingelton instance;
 

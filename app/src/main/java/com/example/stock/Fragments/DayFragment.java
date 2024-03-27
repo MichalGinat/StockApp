@@ -1,22 +1,17 @@
 package com.example.stock.Fragments;
-
-import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-
 import com.example.stock.FMPApiServiceSingelton;
 import com.example.stock.R;
 import com.example.stock.model.DailyStockData;
-import com.example.stock.model.StockInfoSerach;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -25,36 +20,25 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
-import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-
+// Represents a Fragment displaying daily stock data using a LineChart,
+// handling data fetching, parsing JSON, and chart rendering.
+// Encapsulates functionality for displaying stock data in the app's UI.
 public class DayFragment extends Fragment {
 
     private static final String TAG = DayFragment.class.getSimpleName();
@@ -63,10 +47,13 @@ public class DayFragment extends Fragment {
 
     private FMPApiServiceSingelton apiService;
     private String symbol;
+
+    // Constructor to initialize the fragment with a stock symbol
     public DayFragment(String symbol) {
         this.symbol=symbol;
     }
 
+    // Method called when the fragment view is created
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -85,6 +72,7 @@ public class DayFragment extends Fragment {
         return rootView;
     }
 
+    // Method to fetch stock data for a specific day using the API service
     private void fetchStockDataDay(String symbol, String date) {
         apiService.StockHistoricalDay(symbol, date, new Callback() {
             @Override
@@ -112,9 +100,6 @@ public class DayFragment extends Fragment {
                         LocalDate previousDate = LocalDate.parse(date).minusDays(1);
                         String previousDateString = previousDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                         fetchStockDataDay(symbol, previousDateString);
-//                        getActivity().runOnUiThread(() -> {
-//                            Toast.makeText(getContext(), "No valid data found", Toast.LENGTH_SHORT).show();
-//                        });
                     }
                 } else {
                     Log.e(TAG, "Error fetching stock quote: " + response.code() + " - " + response.message());
@@ -126,6 +111,7 @@ public class DayFragment extends Fragment {
         });
     }
 
+    // Method to parse JSON response into a list of daily stock data objects
     private List<DailyStockData> parseResponseToDailyStockDataList(String responseData) {
         List<DailyStockData> stockDataList = new ArrayList<>();
         try {
@@ -147,8 +133,7 @@ public class DayFragment extends Fragment {
         return stockDataList;
     }
 
-
-
+    // Method to display daily stock data in a LineChart
     private void displayStockDataInGraph(List<DailyStockData> dailyStockDataList) {
         if (dailyStockDataList == null || dailyStockDataList.isEmpty()) {
             Log.e(TAG, "Empty or null data list provided.");
@@ -230,18 +215,4 @@ public class DayFragment extends Fragment {
         // Refresh chart
         lineChart.invalidate();
     }
-
-
-//    public void setStockSymbol(String symbol) {
-//        LocalDate currentDate = LocalDate.now();
-//        String formattedDate = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-//        fetchStockDataDay(symbol, formattedDate);
-//    }
-
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-//                             @Nullable Bundle savedInstanceState) {
-//        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_day, container, false);
-//    }
 }

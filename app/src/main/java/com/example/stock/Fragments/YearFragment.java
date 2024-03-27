@@ -1,16 +1,14 @@
-package com.example.stock.Fragments;// YearFragment.java
+package com.example.stock.Fragments;
 import android.util.Log;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-
 import com.example.stock.FMPApiServiceSingelton;
 import com.example.stock.R;
 import com.github.mikephil.charting.charts.LineChart;
@@ -22,23 +20,23 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.example.stock.model.DailyStockData;
-
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
+// Represents a Fragment displaying yearly stock data using a LineChart,
+// handling data fetching, parsing JSON, and chart rendering.
+// Encapsulates functionality for displaying stock data in the app's UI.
 public class YearFragment extends Fragment {
     private static final String TAG = YearFragment.class.getSimpleName();
 
@@ -46,6 +44,7 @@ public class YearFragment extends Fragment {
     private LineChart lineChart;
     private FMPApiServiceSingelton apiService;
 
+    // Constructor to set the stock symbol
     public YearFragment(String symbol) {
         this.symbol = symbol;
     }
@@ -63,6 +62,7 @@ public class YearFragment extends Fragment {
         return view;
     }
 
+    // Parse JSON response to a list of DailyStockData objects
     private List<DailyStockData> parseResponseToYearlyStockDataList(String responseData) {
         List<DailyStockData> stockDataList = new ArrayList<>();
         try {
@@ -83,7 +83,7 @@ public class YearFragment extends Fragment {
         return stockDataList;
     }
 
-
+    // Fetch stock data for the past year
     private void fetchStockDataYear(String symbol) {
         Calendar calendar = Calendar.getInstance();
 
@@ -137,13 +137,11 @@ public class YearFragment extends Fragment {
         });
     }
 
-
+    // Display stock data in the LineChart
     private void displayStockDataInGraph(List<DailyStockData> stockDataList) {
-        // Sort the stockDataList by date in ascending order
         Collections.sort(stockDataList, new Comparator<DailyStockData>() {
             @Override
             public int compare(DailyStockData data1, DailyStockData data2) {
-                // Assuming data.getDate() returns a date in "YYYY-MM-DD" format
                 return data1.getDate().compareTo(data2.getDate());
             }
         });
@@ -160,8 +158,8 @@ public class YearFragment extends Fragment {
 
         // Customize the line chart appearance
         dataSet.setColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary));
-        dataSet.setDrawValues(false); // Disable drawing values on data points
-        dataSet.setDrawCircles(false); // Hide data points (dots)
+        dataSet.setDrawValues(false);
+        dataSet.setDrawCircles(false);
         LineData lineData = new LineData(dataSet);
         lineChart.getDescription().setEnabled(false);
         // Configure X-axis formatting
@@ -169,8 +167,8 @@ public class YearFragment extends Fragment {
         xAxis.setGranularityEnabled(true);
 
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // Set x-axis position to bottom
-        xAxis.setLabelCount(1); // Set label count based on data size
-        xAxis.setGranularity(1f); // Set granularity to 1 unit (day)
+        xAxis.setLabelCount(1);
+        xAxis.setGranularity(1f);
 
         xAxis.setValueFormatter(new ValueFormatter() {
             private String currentYear = ""; // Variable to store the current year
@@ -201,23 +199,11 @@ public class YearFragment extends Fragment {
             }
         });
 
-
-
-
-
-
-
-
-
-
-
-
         // Configure Y-axis formatting
         YAxis leftYAxis = lineChart.getAxisLeft();
         leftYAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getAxisLabel(float value, AxisBase axis) {
-                // Customize left Y-axis labels if needed
                 return String.valueOf(value);
             }
         });
@@ -233,32 +219,5 @@ public class YearFragment extends Fragment {
         lineChart.invalidate();
 
     }
-//    private boolean isNewYear(List<DailyStockData> data) {
-//        String currentYear = getCurrentYear();
-//        boolean isFirstYear = false;
-//        boolean isNewYearDisplayed = false;
-//
-//        for (DailyStockData stockData : data) {
-//            String year = stockData.getDate().split("-")[0];
-//            if (year.equals(currentYear)) {
-//                if (!isNewYearDisplayed) {
-//                    isFirstYear = true;
-//                    isNewYearDisplayed = true;
-//                }
-//            } else {
-//                isNewYearDisplayed = false; // Reset flag for a new year
-//            }
-//        }
-//
-//        return isFirstYear;
-//    }
-//
-//    // Helper method to get the current year
-//    private String getCurrentYear() {
-//        Calendar calendar = Calendar.getInstance();
-//        int currentYear = calendar.get(Calendar.YEAR);
-//        return String.valueOf(currentYear);
-//    }
-
 }
 

@@ -1,18 +1,14 @@
 package com.example.stock.Fragments;
-
-// MonthFragment.java
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-
 import com.example.stock.FMPApiServiceSingelton;
 import com.example.stock.R;
 import com.example.stock.model.DailyStockData;
@@ -24,26 +20,23 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
+// Represents a Fragment displaying monthly stock data using a LineChart,
+// handling data fetching, parsing JSON, and chart rendering.
+// Encapsulates functionality for displaying stock data in the app's UI.
 public class MonthFragment extends Fragment {
 
     private static final String TAG = DayFragment.class.getSimpleName();
@@ -52,9 +45,12 @@ public class MonthFragment extends Fragment {
 
     private FMPApiServiceSingelton apiService;
     private String symbol;
+
+    // Constructor to initialize the fragment with a stock symbol
     public MonthFragment(String symbol) {
         this.symbol=symbol;
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -69,6 +65,7 @@ public class MonthFragment extends Fragment {
         return rootView;
     }
 
+    // Method to fetch stock data for the past 30 days
     private void fetchStockMonthData(String symbol) {
         Calendar calendar = Calendar.getInstance();
 
@@ -88,6 +85,7 @@ public class MonthFragment extends Fragment {
         // Current date (today)
         String today = currentYear + "-" + (currentMonth < 10 ? "0" + currentMonth : currentMonth) + "-" + (currentDay < 10 ? "0" + currentDay : currentDay); // Get current day dynamically
 
+        // Call API to fetch historical stock data for the past 30 days
         apiService.StockHistoricalData(symbol, startOf30DaysAgo, today, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -100,9 +98,11 @@ public class MonthFragment extends Fragment {
                     String responseData = response.body().string();
                     Log.e(TAG, responseData);
 
+                    // Parse the JSON response to a list of daily stock data
                     List<DailyStockData> stockDataList = parseResponseToMonthlyStockDataList(responseData);
 
                     if (!stockDataList.isEmpty()) {
+                        // Update UI with the fetched data
                         getActivity().runOnUiThread(() -> {
                             displayStockDataInGraph(stockDataList);
                         });
@@ -124,7 +124,7 @@ public class MonthFragment extends Fragment {
 
 
 
-
+    // Method to parse JSON response into a list of daily stock data objects
     private List<DailyStockData> parseResponseToMonthlyStockDataList(String responseData) {
         List<DailyStockData> stockDataList = new ArrayList<>();
         try {
@@ -147,7 +147,7 @@ public class MonthFragment extends Fragment {
 
 
 
-
+    // Method to display monthly stock data in a LineChart
     private void displayStockDataInGraph(List<DailyStockData> monthlyStockData) {
         // Sort the monthlyStockData list by date in ascending order
         Collections.sort(monthlyStockData, new Comparator<DailyStockData>() {
@@ -215,6 +215,5 @@ public class MonthFragment extends Fragment {
         // Refresh the chart
         lineChart.invalidate();
     }
-
 
 }
