@@ -62,6 +62,10 @@ public class DayFragment extends Fragment {
     private LineChart lineChart;
 
     private FMPApiServiceSingelton apiService;
+    private String symbol;
+    public DayFragment(String symbol) {
+        this.symbol=symbol;
+    }
 
     @Nullable
     @Override
@@ -73,7 +77,11 @@ public class DayFragment extends Fragment {
 
         // Initialize LineChart
         lineChart = rootView.findViewById(R.id.line_chart);
-//
+
+        LocalDate currentDate = LocalDate.now();
+        String formattedDate = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        fetchStockDataDay(symbol, formattedDate);
+
         return rootView;
     }
 
@@ -101,9 +109,12 @@ public class DayFragment extends Fragment {
                         });
                     } else {
                         Log.e(TAG, "No valid data found in response.");
-                        getActivity().runOnUiThread(() -> {
-                            Toast.makeText(getContext(), "No valid data found", Toast.LENGTH_SHORT).show();
-                        });
+                        LocalDate previousDate = LocalDate.parse(date).minusDays(1);
+                        String previousDateString = previousDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                        fetchStockDataDay(symbol, previousDateString);
+//                        getActivity().runOnUiThread(() -> {
+//                            Toast.makeText(getContext(), "No valid data found", Toast.LENGTH_SHORT).show();
+//                        });
                     }
                 } else {
                     Log.e(TAG, "Error fetching stock quote: " + response.code() + " - " + response.message());
@@ -163,7 +174,7 @@ public class DayFragment extends Fragment {
             xValues.add(data.getDate()); // Assuming date format is "HH:mm:ss"
         }
 
-        LineDataSet dataSet = new LineDataSet(entries, "Stock Data");
+        LineDataSet dataSet = new LineDataSet(entries, "Daily Stock Data");
         dataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         dataSet.setDrawCircles(false); // Hide data points (dots)
         dataSet.setDrawValues(false); // Hide values (text)
@@ -171,6 +182,7 @@ public class DayFragment extends Fragment {
 
         LineData lineData = new LineData(dataSet);
         lineChart.setData(lineData);
+        lineChart.getDescription().setEnabled(false);
 
         // Customize chart appearance
         XAxis xAxis = lineChart.getXAxis();
@@ -220,22 +232,11 @@ public class DayFragment extends Fragment {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-    public void setStockSymbol(String symbol) {
-        LocalDate currentDate = LocalDate.now();
-        String formattedDate = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        fetchStockDataDay(symbol, formattedDate);
-    }
+//    public void setStockSymbol(String symbol) {
+//        LocalDate currentDate = LocalDate.now();
+//        String formattedDate = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+//        fetchStockDataDay(symbol, formattedDate);
+//    }
 
 //    @Override
 //    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,

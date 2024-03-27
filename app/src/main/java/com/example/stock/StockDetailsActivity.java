@@ -6,10 +6,13 @@ import android.util.Log;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.stock.Fragments.MonthFragment;
+import com.example.stock.Fragments.YearFragment;
 import com.example.stock.model.StockInfoSerach;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -34,6 +37,8 @@ public class StockDetailsActivity extends BaseActivity {
     private TextView changesPercentageTextView;
     private TextView dayLowTextView;
     private TextView dayHighTextView;
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock_details);
@@ -50,30 +55,29 @@ public class StockDetailsActivity extends BaseActivity {
         dayHighTextView = findViewById(R.id.dayHighTextView);
 
 
-        PagerAdapter pagerAdapter = new PagerAdapter(this);
+
 
         // Set up ViewPager2 with adapter
-        viewPager.setAdapter(pagerAdapter);
-        new TabLayoutMediator(tabLayout, viewPager,
-                (tab, position) -> tab.setText(pagerAdapter.getTabTitle(position))
-        ).attach();
+
 
         StockInfoSerach selectedStock = getIntent().getParcelableExtra("selectedStockInfo");
         if (selectedStock != null) {
             symbolTextView.setText(" " + selectedStock.getSymbol());
             nameTextView.setText(" " + selectedStock.getName());
+            PagerAdapter pagerAdapter = new PagerAdapter(this,selectedStock.getSymbol());
+            viewPager.setAdapter(pagerAdapter);
+
+            new TabLayoutMediator(tabLayout, viewPager,
+                    (tab, position) -> tab.setText(pagerAdapter.getTabTitle(position))
+            ).attach();
 
             // Fetch price and change using the Quote API
             fetchStockQuote(selectedStock.getSymbol());
-            viewPager.post(() -> {
-                DayFragment dayFragment = (DayFragment) getSupportFragmentManager().findFragmentByTag("f" + viewPager.getCurrentItem());
-                if (dayFragment != null) {
-                    dayFragment.setStockSymbol(selectedStock.getSymbol());
-                }
-            });
         } else {
             Log.e(TAG, "Selected stock is null.");
         }
+
+
     }
 
     private void fetchStockQuote(String symbol) {
@@ -138,5 +142,4 @@ public class StockDetailsActivity extends BaseActivity {
             }
         });
     }
-
 }

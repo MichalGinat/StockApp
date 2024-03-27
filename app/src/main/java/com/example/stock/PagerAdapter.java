@@ -12,8 +12,10 @@ import com.example.stock.Fragments.YearFragment;
 public class PagerAdapter extends FragmentStateAdapter {
     private static final String[] TAB_TITLES = new String[]{"Day", "Month", "Year"};
 
-    public PagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+    private String symbol;
+    public PagerAdapter(@NonNull FragmentActivity fragmentActivity, String symbol) {
         super(fragmentActivity);
+        this.symbol = symbol;
     }
 
     @NonNull
@@ -22,11 +24,11 @@ public class PagerAdapter extends FragmentStateAdapter {
         // Return the appropriate fragment based on the position
         switch (position) {
             case 0:
-                return new DayFragment();
+                return new DayFragment(symbol);
             case 1:
-                return new MonthFragment();
+                return new MonthFragment(symbol);
             case 2:
-                return new YearFragment();
+                return new YearFragment(symbol);
             default:
                 return null;
         }
