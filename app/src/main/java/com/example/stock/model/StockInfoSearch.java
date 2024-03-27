@@ -7,32 +7,32 @@ import android.os.Parcelable;
  * Represents search results for stock information including symbol and name.
  * Implements Parcelable for object serialization.
  */
-public class StockInfoSerach implements Parcelable {
+public class StockInfoSearch implements Parcelable {
     private String symbol; // Stores the symbol of the stock
     private String name; // Stores the name of the stock
 
     // Constructor to initialize StockInfoSearch object with symbol and name
-    public StockInfoSerach(String symbol, String name) {
+    public StockInfoSearch(String symbol, String name) {
         this.symbol = symbol;
         this.name = name;
     }
 
     // Parcelable constructor used to reconstruct the object from a Parcel
-    protected StockInfoSerach(Parcel in) {
+    protected StockInfoSearch(Parcel in) {
         symbol = in.readString();
         name = in.readString();
     }
 
     // Creator for Parcelable interface, responsible for creating instances of StockInfoSearch from a Parcel
-    public static final Creator<StockInfoSerach> CREATOR = new Creator<StockInfoSerach>() {
+    public static final Creator<StockInfoSearch> CREATOR = new Creator<StockInfoSearch>() {
         @Override
-        public StockInfoSerach createFromParcel(Parcel in) {
-            return new StockInfoSerach(in);
+        public StockInfoSearch createFromParcel(Parcel in) {
+            return new StockInfoSearch(in);
         }
 
         @Override
-        public StockInfoSerach[] newArray(int size) {
-            return new StockInfoSerach[size];
+        public StockInfoSearch[] newArray(int size) {
+            return new StockInfoSearch[size];
         }
     };
 

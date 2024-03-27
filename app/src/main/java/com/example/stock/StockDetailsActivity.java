@@ -6,7 +6,7 @@ import android.util.Log;
 import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
-import com.example.stock.model.StockInfoSerach;
+import com.example.stock.model.StockInfoSearch;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.JsonArray;
@@ -52,7 +52,8 @@ public class StockDetailsActivity extends BaseActivity {
         dayHighTextView = findViewById(R.id.dayHighTextView);
 
         // Retrieve selected stock information from intent
-        StockInfoSerach selectedStock = getIntent().getParcelableExtra("selectedStockInfo");
+        StockInfoSearch selectedStock = getIntent().getParcelableExtra("selectedStockInfo");
+
         if (selectedStock != null) {
             symbolTextView.setText(" " + selectedStock.getSymbol());
             nameTextView.setText(" " + selectedStock.getName());

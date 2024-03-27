@@ -3,39 +3,67 @@
     android:layout_width="match_parent"
     android:id="@+id/commonLayout"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/editTextCompanyNameOrSymbol"
-        android:layout_width="0dp"
-        android:layout_weight="1"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:id="@+id/homeLayout"
         android:layout_height="wrap_content"
-        android:hint="Enter Company name Or Symbol"
-        android:inputType="text"
-        android:textSize="18sp"
-        android:padding="16dp"
-        android:layout_marginEnd="8dp" />
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="4dp">
 
-    <!-- ImageView for Search icon -->
-    <ImageView
-        android:id="@+id/imageViewSearch"
-        android:layout_width="40dp"
-        android:layout_height="match_parent"
-        android:src="@drawable/search_icon"
-        android:clickable="true"
-        android:focusable="true"
-        android:padding="8dp"
-        android:layout_marginEnd="8dp" />
+        <!-- ImageView for Home icon -->
+        <ImageView
+            android:id="@+id/imageViewHome"
+            android:src="@drawable/home_icon"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="4dp" />
 
-    <!-- ImageView for Home icon -->
-    <ImageView
-        android:id="@+id/imageViewHome"
-        android:src="@drawable/home_icon"
-        android:layout_width="40dp"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:focusable="true"
-        android:padding="8dp" />
+        <TextView
+            android:id="@+id/appTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stocks"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"/>
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:id="@+id/searchLayout"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editTextCompanyNameOrSymbol"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="Enter Company name Or Symbol"
+            android:inputType="text"
+            android:textSize="18sp"
+            android:padding="16dp"
+            android:layout_marginEnd="8dp" />
+
+        <!-- ImageView for Search icon -->
+        <ImageView
+            android:id="@+id/imageViewSearch"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/search_icon"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            android:layout_marginEnd="8dp" />
+
+    </LinearLayout>
 
 
 </LinearLayout>

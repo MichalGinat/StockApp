@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.stock.model.StockInfoSerach;
+import com.example.stock.model.StockInfoSearch;
 import java.util.List;
 import android.content.Intent;
 
@@ -21,10 +21,10 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
     private Context context;
 
     // List of stock information items
-    private List<StockInfoSerach> stockInfoList;
+    private List<StockInfoSearch> stockInfoList;
 
     // Constructor to initialize the adapter with context and stock information list
-    public StockAdapter(Context context, List<StockInfoSerach> stockInfoList) {
+    public StockAdapter(Context context, List<StockInfoSearch> stockInfoList) {
         this.context = context;
         this.stockInfoList = stockInfoList;
     }
@@ -41,7 +41,7 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
     // Bind data to views in the ViewHolder
     @Override
     public void onBindViewHolder(@NonNull StockViewHolder holder, int position) {
-        StockInfoSerach stockInfo = stockInfoList.get(position);
+        StockInfoSearch stockInfo = stockInfoList.get(position);
         holder.symbolTextView.setText(stockInfo.getSymbol());
         holder.nameTextView.setText(stockInfo.getName());
 

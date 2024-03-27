@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.stock.model.StockInfoSerach;
+import com.example.stock.model.StockInfoSearch;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class SearchResultsActivity extends BaseActivity {
 
     private RecyclerView recyclerView;
     private StockAdapter stockAdapter;
-    private List<StockInfoSerach> stockInfoList;
+    private List<StockInfoSearch> stockInfoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

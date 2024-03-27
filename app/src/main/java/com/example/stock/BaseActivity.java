@@ -12,7 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.stock.model.StockInfoSerach;
+import com.example.stock.model.StockInfoSearch;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -97,15 +97,15 @@ public class BaseActivity extends AppCompatActivity {
                     String responseData = response.body().string();
                     JsonArray jsonArray = JsonParser.parseString(responseData).getAsJsonArray();
 
-                    List<StockInfoSerach> stockInfoList = new ArrayList<>();
+                    List<StockInfoSearch> stockInfoList = new ArrayList<>();
                     for (JsonElement element : jsonArray) {
                         String symbol = element.getAsJsonObject().get("symbol").getAsString();
                         String name = element.getAsJsonObject().get("name").getAsString();
-                        stockInfoList.add(new StockInfoSerach(symbol, name));
+                        stockInfoList.add(new StockInfoSearch(symbol, name));
                     }
 
                     // Handle the list of StockInfo objects here - for debugging
-                    for (StockInfoSerach stockInfo : stockInfoList) {
+                    for (StockInfoSearch stockInfo : stockInfoList) {
                         Log.d(TAG, "Symbol: " + stockInfo.getSymbol() + ", Name: " + stockInfo.getName());
                     }
 
@@ -123,9 +123,9 @@ public class BaseActivity extends AppCompatActivity {
      *
      * @param stockInfoList List of StockInfoSerach objects representing search results.
      */
-    private void showSearchResults(List<StockInfoSerach> stockInfoList) {
+    private void showSearchResults(List<StockInfoSearch> stockInfoList) {
         Intent intent = new Intent(this, SearchResultsActivity.class);
-        intent.putParcelableArrayListExtra("stockInfoList", (ArrayList<StockInfoSerach>) stockInfoList);
+        intent.putParcelableArrayListExtra("stockInfoList", (ArrayList<StockInfoSearch>) stockInfoList);
         startActivity(intent);
     }
 }
