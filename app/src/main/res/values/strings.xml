@@ -3,4 +3,5 @@
     <string name="defaultDate">January 1, 1970</string>
     <string name="favorites">FAVORITES</string>
     <string name="favorite_desc">favorite</string>
+    <string name="empty_fav_list_text">You haven\'t chosen any stocks yet.</string>
 </resources>

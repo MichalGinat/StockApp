@@ -46,7 +46,20 @@
             android:text="@string/favorites"/>
     </RelativeLayout>
 
-    <!-- RecyclerView for displaying search results -->
+    <TextView
+        android:id="@+id/empty_fav_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="5dp"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:text="@string/empty_fav_list_text"
+        android:visibility="visible" />
+
+    <!-- RecyclerView for displaying favorites stocks -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/favoritesView"
         android:layout_width="match_parent"

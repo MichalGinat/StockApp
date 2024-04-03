@@ -68,8 +68,10 @@ public class StockDetailsActivity extends BaseActivity {
 
         if (selectedStock != null) {
             // Show appropriate favorite icon according to Shared Preferences
+            List<String> stockInfoList = new ArrayList<>();
             String serializedFavList = preferences.getString(PREFERENCES_KEY, "");
-            List<String> stockInfoList = Arrays.asList(serializedFavList.split(","));
+            if (!serializedFavList.isEmpty())
+                stockInfoList = Arrays.asList(serializedFavList.split(","));
             boolean isFavorite = stockInfoList.contains(selectedStock.getSymbol());
             favoriteButton.setImageResource(isFavorite
                     ? R.drawable.ic_baseline_star_24
@@ -94,10 +96,11 @@ public class StockDetailsActivity extends BaseActivity {
     }
 
     public void toggleFavorite(View view) {
+        List<String> stockInfoList = new ArrayList<>();
         String symbolName = symbolTextView.getText().toString();
         String serializedFavList = preferences.getString(PREFERENCES_KEY, "");
-        List<String> stockInfoList = new ArrayList<>();
-        Collections.addAll(stockInfoList, serializedFavList.split(","));
+        if (!serializedFavList.isEmpty())
+            Collections.addAll(stockInfoList, serializedFavList.split(","));
         boolean isFavorite = stockInfoList.contains(symbolName);
         if (isFavorite) {
             favoriteButton.setImageResource(R.drawable.ic_baseline_star_border_24);

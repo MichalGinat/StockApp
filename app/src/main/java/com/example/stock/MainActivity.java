@@ -1,6 +1,7 @@
 package com.example.stock;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -30,6 +31,8 @@ public class MainActivity extends BaseActivity {
     protected void setupMainButtons() {
         // Handle Date view
         TextView date = findViewById(R.id.date);
+        TextView empty_list_text = findViewById(R.id.empty_fav_list);
+
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
         int year = calendar.get(Calendar.YEAR);
         int dateNum = calendar.get(Calendar.DATE);
@@ -39,8 +42,13 @@ public class MainActivity extends BaseActivity {
 
         // Retrieving Favorite Stock list
         String serializedFavList = preferences.getString(PREFERENCES_KEY, "");
-        List<String> stockInfoList = Arrays.asList(serializedFavList.split(","));
-        showWatchlist(stockInfoList);
+        if (serializedFavList.isEmpty()) {
+            empty_list_text.setVisibility(View.VISIBLE);
+        } else {
+            empty_list_text.setVisibility(View.GONE);
+            List<String> stockInfoList = Arrays.asList(serializedFavList.split(","));
+            showWatchlist(stockInfoList);
+        }
     }
 
     private void showWatchlist(List<String> stockInfoList) {
