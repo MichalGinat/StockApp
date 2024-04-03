@@ -12,9 +12,11 @@ import com.example.stock.model.StockInfoSearch;
 import java.util.List;
 import android.content.Intent;
 
-// RecyclerView adapter for displaying stock information
-// Handles creation of StockViewHolder and binding data to views
-// Provides item click functionality to launch StockDetailsActivity with selected stock info
+/**
+ * RecyclerView adapter for displaying stock information
+ * Handles creation of StockViewHolder and binding data to views
+ * Provides item click functionality to launch StockDetailsActivity with selected stock info
+*/
 public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
 
     // Context to be used for creating views

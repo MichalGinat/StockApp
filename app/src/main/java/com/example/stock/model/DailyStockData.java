@@ -8,13 +8,33 @@ import android.os.Parcelable;
  * Implements Parcelable for object serialization.
  */
 public class DailyStockData implements Parcelable {
-    private String date; // Stores the date of the daily stock data
-    private float price; // Stores the price of the stock on the given date
+    private final String date; // Stores the date of the daily stock data
+    private final float price; // Stores the price of the stock on the given date
 
     // Constructor to initialize the DailyStockData object with price and date
-    public DailyStockData(float price, String time) {
+    private DailyStockData(float price, String time) {
         this.price = price;
         this.date = time;
+    }
+
+    // Builder class for constructing DailyStockData objects
+    public static class Builder {
+        private String date;
+        private float price;
+
+        public Builder setDate(String date) {
+            this.date = date;
+            return this;
+        }
+
+        public Builder setPrice(float price) {
+            this.price = price;
+            return this;
+        }
+
+        public DailyStockData build() {
+            return new DailyStockData(price, date);
+        }
     }
 
     // Parcelable constructor used to reconstruct the object from a Parcel
@@ -41,16 +61,8 @@ public class DailyStockData implements Parcelable {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public float getPrice() {
         return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
     }
 
     // Parcelable method describing the contents of the object

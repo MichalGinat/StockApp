@@ -6,30 +6,29 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
 /**
- * FMPApiServiceSingelton is a singleton class responsible for making API requests
+ * FMPApiServiceSingleton is a singleton class responsible for making API requests
  * to the Financial Modeling Prep (FMP) API. It provides methods to fetch stock data
  * including quote, historical data, and search results by name or symbol.
  */
-
-public class FMPApiServiceSingelton {
+public class FMPApiServiceSingleton {
     private static final String BASE_URL = "https://financialmodelingprep.com/api/v3";
-    private static final String API_KEY = "0hUHsuduTQG0sHwT12l1gCLOsZnQqj3N";
+    private static final String API_KEY = "N1lZL8M2L4rCVzJ8hYApVHGFN7CHL0XS";
 
-    private static FMPApiServiceSingelton instance;
+    private static FMPApiServiceSingleton instance;
 
     private final OkHttpClient client;
 
     // Private constructor to prevent instantiation outside this class
-    private FMPApiServiceSingelton() {
+    private FMPApiServiceSingleton() {
         this.client = new OkHttpClient();
     }
 
     // Static method to get the singleton instance
-    public static FMPApiServiceSingelton getInstance() {
+    public static FMPApiServiceSingleton getInstance() {
         if (instance == null) {
-            synchronized (FMPApiServiceSingelton.class) {
+            synchronized (FMPApiServiceSingleton.class) {
                 if (instance == null) {
-                    instance = new FMPApiServiceSingelton();
+                    instance = new FMPApiServiceSingleton();
                 }
             }
         }

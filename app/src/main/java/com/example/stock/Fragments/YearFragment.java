@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import com.example.stock.FMPApiServiceSingelton;
+import com.example.stock.FMPApiServiceSingleton;
 import com.example.stock.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -34,15 +34,18 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-// Represents a Fragment displaying yearly stock data using a LineChart,
-// handling data fetching, parsing JSON, and chart rendering.
-// Encapsulates functionality for displaying stock data in the app's UI.
+
+/**
+ * Represents a Fragment displaying yearly stock data using a LineChart,
+ * handling data fetching, parsing JSON, and chart rendering.
+ * Encapsulates functionality for displaying stock data in the app's UI.
+ */
 public class YearFragment extends Fragment {
     private static final String TAG = YearFragment.class.getSimpleName();
 
     private String symbol;
     private LineChart lineChart;
-    private FMPApiServiceSingelton apiService;
+    private FMPApiServiceSingleton apiService;
 
     // Constructor to set the stock symbol
     public YearFragment(String symbol) {
@@ -55,7 +58,7 @@ public class YearFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_year, container, false);
         lineChart = view.findViewById(R.id.line_chart);
-        apiService = FMPApiServiceSingelton.getInstance();
+        apiService = FMPApiServiceSingleton.getInstance();
         // Fetch stock data from one year ago to today
         fetchStockDataYear(symbol);
 
@@ -75,7 +78,10 @@ public class YearFragment extends Fragment {
                 String dateString = historicalObj.getString("date");
                 float closePrice = (float) historicalObj.getDouble("close");
 
-                stockDataList.add(new DailyStockData(closePrice, dateString));
+                stockDataList.add(new DailyStockData.Builder()
+                        .setPrice(closePrice)
+                        .setDate(dateString)
+                        .build());
             }
         } catch (JSONException e) {
             Log.e(TAG, "Error parsing JSON data: " + e.getMessage());
@@ -113,8 +119,6 @@ public class YearFragment extends Fragment {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.isSuccessful()) {
                     String responseData = response.body().string();
-                    Log.e(TAG, responseData);
-
                     List<DailyStockData> stockDataList = parseResponseToYearlyStockDataList(responseData);
 
                     if (!stockDataList.isEmpty()) {
@@ -217,7 +221,6 @@ public class YearFragment extends Fragment {
 
         // Refresh the chart
         lineChart.invalidate();
-
     }
 }
 

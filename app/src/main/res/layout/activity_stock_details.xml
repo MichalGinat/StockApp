@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <!-- Include layout_common.xml at the top -->
     <include layout="@layout/layout_common" />
 
     <RelativeLayout
@@ -31,6 +30,18 @@
             android:textSize="16sp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="4dp"/>
+
+        <ImageButton
+            android:id="@+id/favoriteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_star_border_24"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:padding="16dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:contentDescription="@string/favorite_desc"
+            android:onClick="toggleFavorite" />
 
     </RelativeLayout>
 
@@ -62,9 +73,6 @@
             android:clipToPadding="false"
             />
     </LinearLayout>
-
-
-
 
     <RelativeLayout
         android:layout_width="match_parent"

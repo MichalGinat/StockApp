@@ -8,13 +8,33 @@ import android.os.Parcelable;
  * Implements Parcelable for object serialization.
  */
 public class StockInfoSearch implements Parcelable {
-    private String symbol; // Stores the symbol of the stock
-    private String name; // Stores the name of the stock
+    private final String symbol; // Stores the symbol of the stock
+    private final String name; // Stores the name of the stock
 
     // Constructor to initialize StockInfoSearch object with symbol and name
-    public StockInfoSearch(String symbol, String name) {
+    private StockInfoSearch(String symbol, String name) {
         this.symbol = symbol;
         this.name = name;
+    }
+
+    // Builder class for constructing StockInfoSearch objects
+    public static class Builder {
+        private String symbol;
+        private String name;
+
+        public Builder setSymbol(String symbol) {
+            this.symbol = symbol;
+            return this;
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public StockInfoSearch build() {
+            return new StockInfoSearch(symbol, name);
+        }
     }
 
     // Parcelable constructor used to reconstruct the object from a Parcel

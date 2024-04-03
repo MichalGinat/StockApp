@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import com.example.stock.FMPApiServiceSingelton;
+import com.example.stock.FMPApiServiceSingleton;
 import com.example.stock.R;
 import com.example.stock.model.DailyStockData;
 import com.github.mikephil.charting.charts.LineChart;
@@ -34,16 +34,18 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-// Represents a Fragment displaying monthly stock data using a LineChart,
-// handling data fetching, parsing JSON, and chart rendering.
-// Encapsulates functionality for displaying stock data in the app's UI.
+/**
+ * Represents a Fragment displaying monthly stock data using a LineChart,
+ * handling data fetching, parsing JSON, and chart rendering.
+ * Encapsulates functionality for displaying stock data in the app's UI.
+ */
 public class MonthFragment extends Fragment {
 
-    private static final String TAG = DayFragment.class.getSimpleName();
+    private static final String TAG = MonthFragment.class.getSimpleName();
 
     private LineChart lineChart;
 
-    private FMPApiServiceSingelton apiService;
+    private FMPApiServiceSingleton apiService;
     private String symbol;
 
     // Constructor to initialize the fragment with a stock symbol
@@ -57,7 +59,7 @@ public class MonthFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_month, container, false);
 
         // Initialize API service instance
-        apiService = FMPApiServiceSingelton.getInstance();
+        apiService = FMPApiServiceSingleton.getInstance();
 
         // Initialize LineChart
         lineChart = rootView.findViewById(R.id.line_chart);
@@ -96,8 +98,6 @@ public class MonthFragment extends Fragment {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.isSuccessful()) {
                     String responseData = response.body().string();
-                    Log.e(TAG, responseData);
-
                     // Parse the JSON response to a list of daily stock data
                     List<DailyStockData> stockDataList = parseResponseToMonthlyStockDataList(responseData);
 
@@ -137,7 +137,10 @@ public class MonthFragment extends Fragment {
                 String dateString = historicalObj.getString("date");
                 float closePrice = (float) historicalObj.getDouble("close");
 
-                stockDataList.add(new DailyStockData(closePrice, dateString));
+                stockDataList.add(new DailyStockData.Builder()
+                        .setPrice(closePrice)
+                        .setDate(dateString)
+                        .build());
             }
         } catch (JSONException e) {
             Log.e(TAG, "Error parsing JSON data: " + e.getMessage());

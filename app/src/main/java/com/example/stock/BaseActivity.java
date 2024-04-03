@@ -1,6 +1,8 @@
 package com.example.stock;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -31,14 +33,19 @@ import okhttp3.Response;
  * such as setting up common UI elements and handling stock data searches.
  */
 public class BaseActivity extends AppCompatActivity {
-    protected FMPApiServiceSingelton apiService;
+    protected FMPApiServiceSingleton apiService;
+    protected SharedPreferences preferences;
+    protected final String PREFERENCES_FILE_NAME = "MyPreferences";
+    protected final String PREFERENCES_KEY = "fav_stocks";
     private static final String TAG = BaseActivity.class.getSimpleName();
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        apiService = FMPApiServiceSingelton.getInstance();
+        apiService = FMPApiServiceSingleton.getInstance();
+        preferences = getSharedPreferences(PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -101,14 +108,12 @@ public class BaseActivity extends AppCompatActivity {
                     for (JsonElement element : jsonArray) {
                         String symbol = element.getAsJsonObject().get("symbol").getAsString();
                         String name = element.getAsJsonObject().get("name").getAsString();
-                        stockInfoList.add(new StockInfoSearch(symbol, name));
+                        StockInfoSearch infoSearch = new StockInfoSearch.Builder()
+                                .setSymbol(symbol)
+                                .setName(name)
+                                .build();
+                        stockInfoList.add(infoSearch);
                     }
-
-                    // Handle the list of StockInfo objects here - for debugging
-                    for (StockInfoSearch stockInfo : stockInfoList) {
-                        Log.d(TAG, "Symbol: " + stockInfo.getSymbol() + ", Name: " + stockInfo.getName());
-                    }
-
                     showSearchResults(stockInfoList); // Start new activity to display search results
 
                 } else {

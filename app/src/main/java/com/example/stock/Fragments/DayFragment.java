@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import com.example.stock.FMPApiServiceSingelton;
+import com.example.stock.FMPApiServiceSingleton;
 import com.example.stock.R;
 import com.example.stock.model.DailyStockData;
 import com.github.mikephil.charting.charts.LineChart;
@@ -38,16 +38,18 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-// Represents a Fragment displaying daily stock data using a LineChart,
-// handling data fetching, parsing JSON, and chart rendering.
-// Encapsulates functionality for displaying stock data in the app's UI.
+/**
+ * Represents a Fragment displaying daily stock data using a LineChart,
+ * handling data fetching, parsing JSON, and chart rendering.
+ * Encapsulates functionality for displaying stock data in the app's UI.
+ */
 public class DayFragment extends Fragment {
 
     private static final String TAG = DayFragment.class.getSimpleName();
 
     private LineChart lineChart;
 
-    private FMPApiServiceSingelton apiService;
+    private FMPApiServiceSingleton apiService;
     private String symbol;
 
     // Constructor to initialize the fragment with a stock symbol
@@ -62,7 +64,7 @@ public class DayFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_day, container, false);
 
         // Initialize API service instance
-        apiService = FMPApiServiceSingelton.getInstance();
+        apiService = FMPApiServiceSingleton.getInstance();
 
         // Initialize LineChart
         lineChart = rootView.findViewById(R.id.line_chart);
@@ -89,8 +91,6 @@ public class DayFragment extends Fragment {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (response.isSuccessful()) {
                     String responseData = response.body().string();
-                    Log.e(TAG, responseData);
-
                     List<DailyStockData> dailyStockData = parseResponseToDailyStockDataList(responseData);
 
                     if (!dailyStockData.isEmpty()) {
@@ -127,7 +127,10 @@ public class DayFragment extends Fragment {
                 String[] dateTimeParts = dateString.split(" ");
                 String timePart = dateTimeParts[1]; // Format: HH:mm:ss
 
-                stockDataList.add(new DailyStockData(closePrice, timePart));
+                stockDataList.add(new DailyStockData.Builder()
+                        .setPrice(closePrice)
+                        .setDate(timePart)
+                        .build());
             }
         } catch (JSONException e) {
             Log.e(TAG, "Error parsing JSON data: " + e.getMessage());

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormatSymbols;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -37,12 +37,9 @@ public class MainActivity extends BaseActivity {
 
         date.setText(String.format("%s %s, %s", month, dateNum, year));
 
-        // Handle Favorite list
-        List<String> stockInfoList = new ArrayList<>();
-        stockInfoList.add("AAPL");
-        stockInfoList.add("MSFT");
-        stockInfoList.add("META");
-
+        // Retrieving Favorite Stock list
+        String serializedFavList = preferences.getString(PREFERENCES_KEY, "");
+        List<String> stockInfoList = Arrays.asList(serializedFavList.split(","));
         showWatchlist(stockInfoList);
     }
 
