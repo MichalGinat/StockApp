@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.stock.Fragments.FragmentFactory;
-import com.example.stock.Fragments.FragmentType;
+import com.example.stock.fragments.FragmentFactory;
+import com.example.stock.fragments.FragmentType;
 
 /**
  * Adapter class for managing fragments in ViewPager2 setup

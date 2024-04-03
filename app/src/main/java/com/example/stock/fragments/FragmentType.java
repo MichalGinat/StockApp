@@ -1,4 +1,4 @@
-package com.example.stock.Fragments;
+package com.example.stock.fragments;
 
 /**
  * Enum representing different types of fragments.
